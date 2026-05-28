@@ -3,6 +3,7 @@ import { MetricCard } from '@/components/MetricCard';
 import { StatusBadge } from '@/components/StatusBadge';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { StartupStatus } from '@/components/StartupStatus';
+import { ConnectionErrors, type ClassCount } from '@/components/ConnectionErrors';
 import { useWsSubscription, useEndpoint } from '@/hooks/useWebSocket';
 import { usePolling } from '@/hooks/usePolling';
 import { telemt } from '@/lib/api';
@@ -19,6 +20,9 @@ interface SummaryData {
   uptime_seconds: number;
   connections_total: number;
   connections_bad_total: number;
+  // Per-class breakdowns are absent on telemt builds that predate them.
+  connections_bad_by_class?: ClassCount[];
+  handshake_failures_by_class?: ClassCount[];
   handshake_timeouts_total: number;
   configured_users: number;
 }
@@ -146,6 +150,14 @@ export function DashboardPage() {
               icon={<ArrowUpDown size={14} className="lg:w-4 lg:h-4" />}
             />
           </div>
+        )}
+
+        {/* Connection Errors breakdown */}
+        {summary && (
+          <ConnectionErrors
+            badByClass={summary.connections_bad_by_class}
+            handshakeFailuresByClass={summary.handshake_failures_by_class}
+          />
         )}
 
         {/* System Info */}
