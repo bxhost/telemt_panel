@@ -4,6 +4,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { UserFormDialog } from '@/components/UserFormDialog';
 import { UserCard } from '@/components/UserCard';
+import { CopyButton } from '@/components/CopyButton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -12,7 +13,7 @@ import {
 import { usePolling } from '@/hooks/usePolling';
 import { telemt, panelApi, ApiError } from '@/lib/api';
 import { Link } from 'react-router-dom';
-import { Copy, Plus, Pencil, Trash2, Check, ArrowUp, ArrowDown, ArrowUpDown, Search, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
+import { Plus, Pencil, Trash2, ArrowUp, ArrowDown, ArrowUpDown, Search, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { formatBytes } from '@/lib/utils';
 import { useQuota, resetUserQuota, type QuotaEntry } from '@/hooks/useQuota';
 import { QuotaBar } from '@/components/QuotaBar';
@@ -48,43 +49,6 @@ interface UserInfo {
   links?: UserLinks;
 }
 
-function CopyButton({ text, label }: { text: string; label?: string }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        // Fallback for non-secure contexts (HTTP)
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-      }
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Ignore copy failures
-    }
-  };
-
-  return (
-    <button
-      onClick={handleCopy}
-      className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs bg-background hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-colors"
-      title={label || 'Copy'}
-    >
-      {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
-      {label && <span>{copied ? 'Copied' : label}</span>}
-    </button>
-  );
-}
-
 interface LinkEntry {
   url: string;
   label: string;
@@ -111,16 +75,6 @@ function appendComment(raw: string, username: string): string {
   }
 }
 
-function replaceServer(raw: string, server: string): string {
-  try {
-    const u = new URL(raw);
-    u.searchParams.set('server', server);
-    return u.toString();
-  } catch {
-    return raw.replace(/([?&]server=)[^&]*/, (_m, prefix) => prefix + encodeURIComponent(server));
-  }
-}
-
 function collectLinks(links?: UserLinks, username?: string): LinkEntry[] {
   const result: LinkEntry[] = [];
   if (!links) return result;
@@ -132,19 +86,12 @@ function collectLinks(links?: UserLinks, username?: string): LinkEntry[] {
     for (const url of urls) addLink(url, label);
   };
 
-  if (links.tls?.length || links.tls_domains?.length) {
-    // tls_domains carries the real domain for each fronted link, but the link's
-    // `server` still points at the primary host — swap it to the domain on display.
-    // The same domains also appear (with the wrong server) in `tls`, so skip those.
-    const domainLinks = links.tls_domains ?? [];
-    const overridden = new Set(domainLinks.map((d) => d.link));
-    for (const url of links.tls ?? []) {
-      if (!overridden.has(url)) addLink(url, 'TLS');
-    }
-    for (const { domain, link } of domainLinks) {
-      addLink(replaceServer(link, domain), 'TLS');
-    }
-  }
+  // NOTE: tls_domains carries faketls *masking* domains (camouflage SNI), which are
+  // not necessarily the user's own server — they may be arbitrary third-party hosts.
+  // Swapping them into the link's `server` produces a broken link, so we don't touch
+  // it. The backend already emits one usable TLS link per masking domain in `tls`
+  // (each keeping the real server), so just surface those as-is.
+  if (links.tls) addLinks(links.tls, 'TLS');
   if (links.secure) addLinks(links.secure, 'Secure');
   if (links.classic) addLinks(links.classic, 'Classic');
   return result;
@@ -459,8 +406,8 @@ export function UsersPage() {
                                       {link.host}
                                     </span>
                                   )}
-                                  <CopyButton text={link.url.replace('tg://proxy', 'https://t.me/proxy')} label={link.label} />
-                                  <CopyButton text={link.url} label="t.me" />
+                                  <CopyButton text={link.url} label={link.label} />
+                                  <CopyButton text={link.url.replace('tg://proxy', 'https://t.me/proxy')} label="t.me" />
                                 </div>
                               ))}
                             </div>
@@ -534,20 +481,18 @@ export function UsersPage() {
             </div>
           ) : (
             pagedUsers.map((u) => {
-              const linkCount = (u.links?.classic?.length ?? 0) + (u.links?.secure?.length ?? 0) + (u.links?.tls?.length ?? 0);
               const allLinks = collectLinks(u.links, u.username);
-              const firstLink = allLinks.length > 0 ? allLinks[0].url.replace('tg://proxy', 'https://t.me/proxy') : undefined;
 
               return (
                 <UserCard
                   key={u.username}
                   username={u.username}
+                  detailHref={`/users/${u.username}`}
                   connections={u.current_connections}
                   activeUniqueIps={u.active_unique_ips}
                   totalTraffic={u.total_octets}
                   online={u.current_connections > 0}
-                  linkCount={linkCount > 0 ? linkCount : undefined}
-                  onCopyLink={firstLink ? () => navigator.clipboard.writeText(firstLink) : undefined}
+                  links={allLinks}
                   onEdit={() => setEditUser(u)}
                   onDelete={() => setDeleteUser(u.username)}
                   quotaUsed={quotaByUser.get(u.username)?.used_bytes}

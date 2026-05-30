@@ -1,25 +1,28 @@
-import { Copy, Pencil, Trash2, RotateCcw } from 'lucide-react';
+import { Pencil, Trash2, RotateCcw } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { QuotaBar } from '@/components/QuotaBar';
+import { CopyButton } from '@/components/CopyButton';
 
 export interface UserCardLink {
   url: string;
   label: string;
+  host: string;
 }
 
 export interface UserCardProps {
   username: string;
+  detailHref: string;
   connections: number;
   activeUniqueIps: number;
   totalTraffic: number;
   online: boolean;
   expiration?: string;
-  linkCount?: number;
+  links?: UserCardLink[];
   quotaUsed?: number;
   quotaLimit?: number;
   onEdit: () => void;
   onDelete: () => void;
-  onCopyLink?: () => void;
   onResetQuota?: () => void;
   className?: string;
 }
@@ -52,16 +55,16 @@ function formatBytes(bytes: number): string {
 
 export function UserCard({
   username,
+  detailHref,
   connections,
   activeUniqueIps,
   totalTraffic,
   online,
-  linkCount,
+  links,
   quotaUsed,
   quotaLimit,
   onEdit,
   onDelete,
-  onCopyLink,
   onResetQuota,
   className,
 }: UserCardProps) {
@@ -94,7 +97,9 @@ export function UserCard({
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-sm font-medium text-text-primary truncate">{username}</span>
+          <Link to={detailHref} className="text-sm font-medium text-accent hover:underline truncate">
+            {username}
+          </Link>
           <span
             className={cn(
               'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-mono leading-none shrink-0',
@@ -111,17 +116,26 @@ export function UserCard({
         <div className="flex items-center gap-3 text-[11px] text-text-secondary">
           <span>{formatBytes(totalTraffic)}</span>
           {activeUniqueIps > 0 && <span>{activeUniqueIps} IP</span>}
-          {linkCount !== undefined && linkCount > 0 && (
-            <button
-              onClick={onCopyLink}
-              className="inline-flex items-center gap-1 text-text-secondary hover:text-text-primary transition-colors min-h-[44px] min-w-[44px] justify-center -my-2"
-              title="Copy link"
-            >
-              <Copy size={12} />
-              <span>{linkCount}</span>
-            </button>
-          )}
         </div>
+
+        {links && links.length > 0 && (
+          <div className="mt-2 space-y-1">
+            {links.map((link, i) => (
+              <div key={i} className="flex items-center gap-1 flex-wrap">
+                {link.host && (
+                  <span
+                    className="text-[11px] font-mono text-text-secondary truncate max-w-full"
+                    title={`${link.label}: ${link.host}`}
+                  >
+                    {link.host}
+                  </span>
+                )}
+                <CopyButton text={link.url} label={link.label} />
+                <CopyButton text={link.url.replace('tg://proxy', 'https://t.me/proxy')} label="t.me" />
+              </div>
+            ))}
+          </div>
+        )}
 
         {quotaLimit !== undefined && quotaLimit > 0 && quotaUsed !== undefined && (
           <div className="mt-2">
