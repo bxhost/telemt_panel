@@ -27,24 +27,29 @@ const tlsLinks = buildProxyLinks(
 );
 
 assertDeepEqual(
-  tlsLinks.map((link) => ({
-    label: link.label,
-    domain: link.domain,
-    isDefault: link.isDefault,
-    url: link.url,
+  tlsLinks.map((group) => ({
+    label: group.label,
+    links: group.links.map((link) => ({
+      domain: link.domain,
+      isDefault: link.isDefault,
+      url: link.url,
+    })),
   })),
   [
     {
       label: 'TLS',
-      domain: 'edge.example',
-      isDefault: true,
-      url: 'tg://proxy?server=edge.example&port=443&secret=tls-default&comment=alice',
-    },
-    {
-      label: 'TLS',
-      domain: 'cdn.example',
-      isDefault: false,
-      url: 'tg://proxy?server=edge.example&port=443&secret=tls-mask&comment=alice',
+      links: [
+        {
+          domain: 'edge.example',
+          isDefault: true,
+          url: 'tg://proxy?server=edge.example&port=443&secret=tls-default&comment=alice',
+        },
+        {
+          domain: 'cdn.example',
+          isDefault: false,
+          url: 'tg://proxy?server=edge.example&port=443&secret=tls-mask&comment=alice',
+        },
+      ],
     },
   ],
 );
@@ -55,8 +60,8 @@ assertDeepEqual(
       secure: ['tg://proxy?server=secure.example&port=443&secret=secure-secret'],
     },
     username,
-  ).map((link) => [link.label, link.domain, link.isDefault]),
-  [['Secure', 'secure.example', true]],
+  ).map((group) => [group.label, group.links.map((link) => [link.domain, link.isDefault])]),
+  [['Secure', [['secure.example', true]]]],
 );
 
 assertDeepEqual(
@@ -65,6 +70,23 @@ assertDeepEqual(
       classic: ['tg://proxy?server=classic.example&port=443&secret=classic-secret'],
     },
     username,
-  ).map((link) => [link.label, link.domain, link.isDefault]),
-  [['Classic', 'classic.example', true]],
+  ).map((group) => [group.label, group.links.map((link) => [link.domain, link.isDefault])]),
+  [['Classic', [['classic.example', true]]]],
+);
+
+assertDeepEqual(
+  buildProxyLinks(
+    {
+      tls: ['tg://proxy?server=edge.example&port=443&secret=tls-default'],
+      secure: ['tg://proxy?server=secure.example&port=443&secret=secure-secret'],
+    },
+    username,
+  ).map((group) => ({
+    label: group.label,
+    links: group.links.map((link) => link.domain),
+  })),
+  [
+    { label: 'TLS', links: ['edge.example'] },
+    { label: 'Secure', links: ['secure.example'] },
+  ],
 );

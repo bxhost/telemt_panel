@@ -2,7 +2,7 @@ import { Pencil, Trash2, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { QuotaBar } from '@/components/QuotaBar';
-import { ProxyLinkButtons, type ProxyLink } from '@/components/ProxyLinkButtons';
+import { ProxyLinkButtons, type ProxyLinkGroup } from '@/components/ProxyLinkButtons';
 
 export interface UserCardProps {
   username: string;
@@ -12,7 +12,7 @@ export interface UserCardProps {
   totalTraffic: number;
   online: boolean;
   expiration?: string;
-  links?: ProxyLink[];
+  links?: ProxyLinkGroup[];
   quotaUsed?: number;
   quotaLimit?: number;
   onEdit: () => void;

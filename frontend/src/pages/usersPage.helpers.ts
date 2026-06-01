@@ -10,11 +10,15 @@ export interface UserLinks {
   tls_domains?: TlsDomainLink[];
 }
 
-export interface ProxyLinkEntry {
+export interface ProxyLinkOption {
   url: string;
-  label: string;
   domain: string;
   isDefault: boolean;
+}
+
+export interface ProxyLinkGroup {
+  label: string;
+  links: ProxyLinkOption[];
 }
 
 function getServer(raw: string): string {
@@ -36,29 +40,28 @@ function appendComment(raw: string, username: string): string {
   }
 }
 
-export function buildProxyLinks(links: UserLinks | undefined, username: string): ProxyLinkEntry[] {
+export function buildProxyLinks(links: UserLinks | undefined, username: string): ProxyLinkGroup[] {
   if (!links) return [];
 
-  const result: ProxyLinkEntry[] = [];
-  const addLink = (rawUrl: string, label: string, domain: string, isDefault: boolean) => {
-    result.push({
+  const result: ProxyLinkGroup[] = [];
+  const makeLink = (rawUrl: string, domain: string, isDefault: boolean): ProxyLinkOption => ({
       url: appendComment(rawUrl, username),
-      label,
       domain,
       isDefault,
-    });
-  };
-  const addLinks = (urls: string[] | undefined, label: string) => {
-    for (const url of urls ?? []) addLink(url, label, getServer(url), true);
+  });
+  const addGroup = (label: string, groupLinks: ProxyLinkOption[]) => {
+    if (groupLinks.length > 0) result.push({ label, links: groupLinks });
   };
 
   if (links.tls?.length) {
     const maskByLink = new Map((links.tls_domains ?? []).map((d) => [d.link, d.domain]));
-    for (const url of links.tls) addLink(url, 'TLS', maskByLink.get(url) ?? getServer(url), !maskByLink.has(url));
-    result.sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
+    const tls = links.tls
+      .map((url) => makeLink(url, maskByLink.get(url) ?? getServer(url), !maskByLink.has(url)))
+      .sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
+    addGroup('TLS', tls);
   }
-  addLinks(links.secure, 'Secure');
-  addLinks(links.classic, 'Classic');
+  addGroup('Secure', (links.secure ?? []).map((url) => makeLink(url, getServer(url), true)));
+  addGroup('Classic', (links.classic ?? []).map((url) => makeLink(url, getServer(url), true)));
 
   return result;
 }
