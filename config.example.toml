@@ -8,7 +8,13 @@ listen = "0.0.0.0:8080"
 # Your proxy config stays simple — just forward the path as-is:
 #
 #   Caddy:  handle /panel123* { reverse_proxy 127.0.0.1:8080 }
-#   nginx:  location /panel123/ { proxy_pass http://127.0.0.1:8080/panel123/; }
+#   nginx:  
+#   location /panel123/ {
+#       proxy_set_header Upgrade $http_upgrade;
+#       proxy_set_header Connection "upgrade";
+#       proxy_set_header Origin "";    
+#       proxy_pass http://127.0.0.1:8080;
+#   }
 #
 # base_path = "/panel123"
 
