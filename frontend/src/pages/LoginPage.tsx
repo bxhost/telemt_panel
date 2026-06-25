@@ -33,7 +33,7 @@ export function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-text-primary">Telemt Panel</h1>
+          <h1 className="text-2xl font-bold text-text-primary">BXN. MTProto Admin Panel</h1>
           <p className="text-sm text-text-secondary mt-1">MTProxy Management</p>
         </div>
 
