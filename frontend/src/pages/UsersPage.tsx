@@ -57,7 +57,7 @@ export function UsersPage() {
   const { quotaByUser, supported: quotaSupported, refresh: refreshQuota } = useQuota(10000);
 
   const [sortKey, setSortKey] = useState<SortKey>('username');
-  const [sortDir, setSortDir] = useState<SortDir>('asc');
+  const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(25);
@@ -219,7 +219,7 @@ export function UsersPage() {
 
   return (
     <div className="min-h-screen">
-      <Header title="Users" refreshing={loading} onRefresh={refresh} />
+      <Header title="Пользователи" refreshing={loading} onRefresh={refresh} />
 
       <div className="p-4 lg:p-6 space-y-4">
         {error && <ErrorAlert message={error.message} onRetry={refresh} />}
@@ -230,7 +230,7 @@ export function UsersPage() {
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
             <input
               type="text"
-              placeholder="Search users..."
+              placeholder="Поиск клиентов..."
               value={search}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="w-full pl-9 pr-3 py-2 min-h-[44px] rounded-lg border border-border bg-surface text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent/50"
@@ -246,7 +246,7 @@ export function UsersPage() {
             )}
             <Button onClick={() => setCreateOpen(true)}>
               <Plus size={16} className="mr-1.5" />
-              <span className="hidden sm:inline">Create User</span>
+              <span className="hidden sm:inline">Создать клиента</span>
               <span className="sm:hidden">Create</span>
             </Button>
           </div>
@@ -262,11 +262,11 @@ export function UsersPage() {
               aria-label="Sort by"
               className="flex-1 min-w-0 min-h-[44px] bg-background text-text-primary rounded-md px-2 py-1.5 text-sm border border-border focus:border-accent focus:outline-none"
             >
-              <option value="username">Username</option>
-              <option value="current_connections">Connections</option>
-              <option value="active_unique_ips">Active IPs</option>
-              <option value="total_octets">Traffic</option>
-              <option value="expiration_rfc3339">Expiration</option>
+              <option value="username">Имя</option>
+              <option value="current_connections">Подключений</option>
+              <option value="active_unique_ips">Активных IP</option>
+              <option value="total_octets">Траффик</option>
+              <option value="expiration_rfc3339">Действует до</option>
             </select>
           </div>
           <button
@@ -324,7 +324,7 @@ export function UsersPage() {
                 {pagedUsers.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={8} className="text-center text-text-secondary py-8">
-                      {search ? 'No users found' : 'No users configured'}
+                      {search ? 'Не найдено пользователей' : 'Нет пользователей'}
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -488,7 +488,7 @@ export function UsersPage() {
         onClose={() => setDeleteUser(null)}
         onConfirm={handleDelete}
         title="Delete User"
-        message={`Are you sure you want to delete user "${deleteUser}"? This action cannot be undone.`}
+        message={`Вы уверены что хотите удалить пользователя "${deleteUser}"? Действие нельзя будет отменить.`}
         loading={deleting}
       />
 
@@ -497,7 +497,7 @@ export function UsersPage() {
         onClose={() => setResetUser(null)}
         onConfirm={handleResetQuota}
         title="Reset quota"
-        message={`Reset the data-quota counter for "${resetUser}"? Used traffic will be set back to zero.`}
+        message={`Сбросить счетчик квоты данных для "${resetUser}"? Использованный трафик будет обнулен..`}
         confirmLabel="Reset"
         loadingLabel="Resetting..."
         confirmVariant="default"
@@ -509,7 +509,7 @@ export function UsersPage() {
         onClose={() => setResetAllOpen(false)}
         onConfirm={handleResetAllQuotas}
         title="Reset all quotas"
-        message={`Reset the data-quota counter for all ${quotaUsers.length} user(s) with a quota? Used traffic will be set back to zero for each. This sends one request per user.`}
+        message={`Сбросить счетчик квоты данных для всех пользователей с квотой ${quotaUsers.length} Использованный трафик будет обнулен для каждого из них. При этом отправляется один запрос на каждого пользователя.`}
         confirmLabel="Reset all"
         loadingLabel="Resetting..."
         confirmVariant="default"
