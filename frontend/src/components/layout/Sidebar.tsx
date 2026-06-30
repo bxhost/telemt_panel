@@ -40,7 +40,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         "lg:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <div className="h-14 p-4 border-b border-border flex items-center justify-between">
+        <div className="p-4 border-b border-border flex items-center justify-between">
           <h1 className="text-lg font-bold text-text-primary tracking-tight">
             Telemt Panel
           </h1>
