@@ -21,7 +21,7 @@ function AuthenticatedApp() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-text-secondary">Loading...</div>
+        <div className="text-text-secondary">Загрузка...</div>
       </div>
     );
   }

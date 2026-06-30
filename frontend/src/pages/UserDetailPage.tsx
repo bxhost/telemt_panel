@@ -104,9 +104,9 @@ function IPTable({ ips, geoData, hasGeo }: IPTableProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>IP Address</TableHead>
-                {hasGeo && <TableHead>Country</TableHead>}
-                {hasGeo && <TableHead>City</TableHead>}
+                <TableHead>IP адрес</TableHead>
+                {hasGeo && <TableHead>Страна</TableHead>}
+                {hasGeo && <TableHead>Город</TableHead>}
                 {hasGeo && <TableHead>ASN</TableHead>}
               </TableRow>
             </TableHeader>
@@ -114,7 +114,7 @@ function IPTable({ ips, geoData, hasGeo }: IPTableProps) {
               {pageIps.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={hasGeo ? 4 : 1} className="text-center text-text-secondary py-6">
-                    {search ? 'No IPs match your search' : 'No IPs'}
+                    {search ? 'IP-адреса, соответствующие вашему запросу, отсутствуют' : 'Нет IP адресов'}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -281,7 +281,7 @@ export function UserDetailPage() {
 
   return (
     <div className="min-h-screen">
-      <Header title={user ? user.username : 'User Details'} refreshing={loading} onRefresh={refresh} />
+      <Header title={user ? user.username : 'Пользователь детально'} refreshing={loading} onRefresh={refresh} />
 
       <div className="p-4 lg:p-6 space-y-4">
         <Link
@@ -339,12 +339,12 @@ export function UserDetailPage() {
             {geoError && (
               <div className="flex items-center gap-2 p-3 rounded-lg border border-yellow-500/30 bg-yellow-500/10 text-sm text-yellow-200">
                 <AlertTriangle size={16} className="shrink-0" />
-                <span>GeoIP not available: {geoError}. Showing IP addresses without geo data.</span>
+                <span>GeoIP недоступен: {geoError}. Отображение IP-адресов без географических данных.</span>
               </div>
             )}
 
             {geoLoading && (
-              <div className="text-sm text-text-secondary">Loading GeoIP data...</div>
+              <div className="text-sm text-text-secondary">Загрузка данных GeoIP...</div>
             )}
 
             {/* IP sections */}
@@ -379,7 +379,7 @@ export function UserDetailPage() {
         onClose={() => setResetOpen(false)}
         onConfirm={handleResetQuota}
         title="Reset quota"
-        message={`Reset the data-quota counter for "${username}"? Used traffic will be set back to zero.`}
+        message={`Сбросить счетчик квоты данных для "${username}"? Использованный трафик будет обнулен`}
         confirmLabel="Reset"
         loadingLabel="Resetting..."
         confirmVariant="default"

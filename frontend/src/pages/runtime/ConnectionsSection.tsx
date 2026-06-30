@@ -14,10 +14,10 @@ export function ConnectionsSection({ data }: ConnectionsSectionProps) {
     <CollapsibleSection title="Connections">
       <div className="space-y-4">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-          <MetricCard label="Total Connections" value={formatNumber(data.totals.current_connections)} />
-          <MetricCard label="ME Connections" value={formatNumber(data.totals.current_connections_me)} />
-          <MetricCard label="Direct Connections" value={formatNumber(data.totals.current_connections_direct)} />
-          <MetricCard label="Active Users" value={formatNumber(data.totals.active_users)} />
+          <MetricCard label="Всего подключений" value={formatNumber(data.totals.current_connections)} />
+          <MetricCard label="ME подключений" value={formatNumber(data.totals.current_connections_me)} />
+          <MetricCard label="Прямых подключений" value={formatNumber(data.totals.current_connections_direct)} />
+          <MetricCard label="Активных пользователей" value={formatNumber(data.totals.active_users)} />
         </div>
         {data.top && (data.top.by_connections.length > 0 || data.top.by_throughput.length > 0) && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

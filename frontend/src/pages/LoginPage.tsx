@@ -42,7 +42,7 @@ export function LoginPage() {
           className="bg-surface border border-border rounded-lg p-6 space-y-4"
         >
           <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username">Пользователь</Label>
             <Input
               id="username"
               value={user}
@@ -54,7 +54,7 @@ export function LoginPage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Пароль</Label>
             <Input
               id="password"
               type="password"

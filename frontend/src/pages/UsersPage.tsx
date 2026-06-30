@@ -230,7 +230,7 @@ export function UsersPage() {
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
             <input
               type="text"
-              placeholder="Поиск клиентов..."
+              placeholder="Поиск пользователей..."
               value={search}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="w-full pl-9 pr-3 py-2 min-h-[44px] rounded-lg border border-border bg-surface text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent/50"
@@ -265,7 +265,7 @@ export function UsersPage() {
               <option value="username">Имя</option>
               <option value="current_connections">Подключений</option>
               <option value="active_unique_ips">Активных IP</option>
-              <option value="total_octets">Траффик</option>
+              <option value="total_octets">Трафик</option>
               <option value="expiration_rfc3339">Действует до</option>
             </select>
           </div>
@@ -287,37 +287,37 @@ export function UsersPage() {
                 <TableRow>
                   <TableHead className="cursor-pointer select-none" onClick={() => toggleSort('username')}>
                     <span className="inline-flex items-center gap-1">
-                      Username
+                      Пользователь
                       {sortKey === 'username' ? (sortDir === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />) : <ArrowUpDown size={12} className="text-text-secondary/40" />}
                     </span>
                   </TableHead>
-                  <TableHead>Proxy Links</TableHead>
+                  <TableHead className="text-right">Действия</TableHead>
+                  <TableHead>Ссылки на прокси</TableHead>
                   <TableHead className="cursor-pointer select-none" onClick={() => toggleSort('current_connections')}>
                     <span className="inline-flex items-center gap-1">
-                      Connections
+                      Подключения
                       {sortKey === 'current_connections' ? (sortDir === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />) : <ArrowUpDown size={12} className="text-text-secondary/40" />}
                     </span>
                   </TableHead>
                   <TableHead className="cursor-pointer select-none" onClick={() => toggleSort('active_unique_ips')}>
                     <span className="inline-flex items-center gap-1">
-                      Active IPs
+                      Активные IP
                       {sortKey === 'active_unique_ips' ? (sortDir === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />) : <ArrowUpDown size={12} className="text-text-secondary/40" />}
                     </span>
                   </TableHead>
                   <TableHead className="cursor-pointer select-none" onClick={() => toggleSort('total_octets')}>
                     <span className="inline-flex items-center gap-1">
-                      Traffic
+                      Траффик
                       {sortKey === 'total_octets' ? (sortDir === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />) : <ArrowUpDown size={12} className="text-text-secondary/40" />}
                     </span>
                   </TableHead>
                   <TableHead>Quota</TableHead>
                   <TableHead className="cursor-pointer select-none" onClick={() => toggleSort('expiration_rfc3339')}>
                     <span className="inline-flex items-center gap-1">
-                      Expiration
+                      Действует до
                       {sortKey === 'expiration_rfc3339' ? (sortDir === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />) : <ArrowUpDown size={12} className="text-text-secondary/40" />}
                     </span>
                   </TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -338,30 +338,6 @@ export function UsersPage() {
                         </TableCell>
                         <TableCell>
                           <ProxyLinkButtons links={buildProxyLinks(u.links, u.username)} />
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={u.current_connections > 0 ? 'default' : 'outline'}>
-                            {u.current_connections}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <span className="text-sm">{u.active_unique_ips}</span>
-                          {u.max_unique_ips != null && u.max_unique_ips > 0 && (
-                            <span className="text-xs text-text-secondary ml-1">/ {u.max_unique_ips}</span>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{formatBytes(u.total_octets)}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <QuotaCell user={u} entry={quotaByUser.get(u.username)} />
-                        </TableCell>
-                        <TableCell>
-                          {u.expiration_rfc3339 ? (
-                            <span className="text-xs">{new Date(u.expiration_rfc3339).toLocaleDateString()}</span>
-                          ) : (
-                            <span className="text-text-secondary">-</span>
-                          )}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1">
@@ -388,6 +364,30 @@ export function UsersPage() {
                             </button>
                           </div>
                         </TableCell>
+                        <TableCell>
+                          <Badge variant={u.current_connections > 0 ? 'default' : 'outline'}>
+                            {u.current_connections}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-sm">{u.active_unique_ips}</span>
+                          {u.max_unique_ips != null && u.max_unique_ips > 0 && (
+                            <span className="text-xs text-text-secondary ml-1">/ {u.max_unique_ips}</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{formatBytes(u.total_octets)}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <QuotaCell user={u} entry={quotaByUser.get(u.username)} />
+                        </TableCell>
+                        <TableCell>
+                          {u.expiration_rfc3339 ? (
+                            <span className="text-xs">{new Date(u.expiration_rfc3339).toLocaleDateString()}</span>
+                          ) : (
+                            <span className="text-text-secondary">-</span>
+                          )}
+                        </TableCell>
                       </TableRow>
                     );
                   })
@@ -401,7 +401,7 @@ export function UsersPage() {
         <div className="lg:hidden space-y-3">
           {pagedUsers.length === 0 ? (
             <div className="text-center text-text-secondary py-8 bg-surface border border-border rounded-lg">
-              {search ? 'No users found' : 'No users configured'}
+              {search ? 'Пользователи не найдены' : 'Пользователи не настроены'}
             </div>
           ) : (
             pagedUsers.map((u) => {

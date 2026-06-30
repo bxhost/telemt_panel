@@ -126,29 +126,29 @@ export function DashboardPage() {
               icon={<Clock size={14} className="lg:w-4 lg:h-4" />}
             />
             <MetricCard
-              label="Total Connections"
+              label="Всего подключений"
               value={formatNumber(summary.connections_total)}
               icon={<Activity size={14} className="lg:w-4 lg:h-4" />}
               variant="success"
             />
             <MetricCard
-              label="Bad Connections"
+              label="Плохих подключений (Bad)"
               value={formatNumber(summary.connections_bad_total)}
               variant={summary.connections_bad_total > 0 ? 'warning' : 'default'}
               status={summary.connections_bad_total > 0 ? 'warn' : 'ok'}
             />
             <MetricCard
-              label="Configured Users"
+              label="Настроенных пользователей"
               value={summary.configured_users}
               icon={<Users size={14} className="lg:w-4 lg:h-4" />}
             />
             <MetricCard
-              label="Active IPs"
+              label="Активных IP"
               value={formatNumber(totalActiveIPs)}
               icon={<Globe size={14} className="lg:w-4 lg:h-4" />}
             />
             <MetricCard
-              label="Total Traffic"
+              label="Всего Трафика"
               value={formatBytes(totalTraffic)}
               icon={<ArrowUpDown size={14} className="lg:w-4 lg:h-4" />}
             />
