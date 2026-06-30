@@ -34,7 +34,7 @@ export function AppLayout() {
             <Menu size={20} />
           </button>
           <h1 className="text-sm font-semibold text-text-primary">
-            Telemt Panel
+            MTProto Panel
           </h1>
         </div>
 

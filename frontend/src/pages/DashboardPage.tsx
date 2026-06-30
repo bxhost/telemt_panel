@@ -94,7 +94,7 @@ export function DashboardPage() {
             animated={!connected}
           />
           <span className={`font-medium ${isHealthy ? 'text-success' : 'text-danger'}`}>
-            {isHealthy ? 'Telemt is running' : 'Telemt is unreachable'}
+            {isHealthy ? 'Telemt запущен' : 'Telemt недоступен'}
           </span>
           {!connected && (
             <span className="ml-auto text-xs text-warning bg-warning/15 px-2 py-1 rounded shrink-0">

@@ -291,8 +291,8 @@ export function UsersPage() {
                       {sortKey === 'username' ? (sortDir === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />) : <ArrowUpDown size={12} className="text-text-secondary/40" />}
                     </span>
                   </TableHead>
-                  <TableHead className="text-right">Действия</TableHead>
                   <TableHead>Ссылки на прокси</TableHead>
+                  <TableHead>Действия</TableHead>
                   <TableHead className="cursor-pointer select-none" onClick={() => toggleSort('current_connections')}>
                     <span className="inline-flex items-center gap-1">
                       Подключения
@@ -434,7 +434,7 @@ export function UsersPage() {
         {sortedUsers.length > 0 && (
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-text-secondary">
             <div className="flex items-center gap-2">
-              <span>Show</span>
+              <span>Показать</span>
               <select
                 value={perPage}
                 onChange={(e) => handlePerPageChange(Number(e.target.value))}

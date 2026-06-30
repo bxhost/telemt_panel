@@ -6,13 +6,13 @@ import { useTheme } from '@/hooks/useTheme';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/users', icon: Users, label: 'Users' },
+  { to: '/users', icon: Users, label: 'Пользователи' },
   { to: '/runtime', icon: Activity, label: 'Runtime' },
-  { to: '/security', icon: Shield, label: 'Security' },
+  { to: '/security', icon: Shield, label: 'Безопасность' },
   { to: '/upstreams', icon: Network, label: 'Upstreams & DCs' },
-  { to: '/config', icon: Settings, label: 'Configuration' },
-  { to: '/update', icon: ArrowUpCircle, label: 'Update' },
-  { to: '/logs', icon: ScrollText, label: 'Logs' },
+  { to: '/config', icon: Settings, label: 'Настройки' },
+  { to: '/update', icon: ArrowUpCircle, label: 'Обновление' },
+  { to: '/logs', icon: ScrollText, label: 'Логи' },
 ];
 
 interface SidebarProps {
@@ -99,7 +99,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-text-secondary hover:text-danger hover:bg-surface-hover w-full transition-colors"
           >
             <LogOut size={18} />
-            Logout
+            Выход
           </button>
         </div>
       </aside>
@@ -111,9 +111,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 export function BottomNav() {
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/users', icon: Users, label: 'Users' },
+    { to: '/users', icon: Users, label: 'Пользователи' },
     { to: '/runtime', icon: Activity, label: 'Runtime' },
-    { to: '/upstreams', icon: Network, label: 'More' },
+    { to: '/upstreams', icon: Network, label: 'Больше' },
   ];
 
   return (

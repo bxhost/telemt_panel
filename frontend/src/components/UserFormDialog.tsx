@@ -96,7 +96,7 @@ export function UserFormDialog({ open, onClose, onSubmit, initialData, mode }: U
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           {mode === 'create' && (
             <div className="space-y-1.5">
-              <Label htmlFor="username">Username *</Label>
+              <Label htmlFor="username">Пользователь *</Label>
               <Input
                 id="username"
                 value={form.username}
@@ -132,7 +132,7 @@ export function UserFormDialog({ open, onClose, onSubmit, initialData, mode }: U
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="max_tcp">Max TCP Conns</Label>
+              <Label htmlFor="max_tcp">Max TCP соединений</Label>
               <Input
                 id="max_tcp"
                 type="number"
@@ -142,7 +142,7 @@ export function UserFormDialog({ open, onClose, onSubmit, initialData, mode }: U
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="max_ips">Max Unique IPs</Label>
+              <Label htmlFor="max_ips">Max уникальных IP</Label>
               <Input
                 id="max_ips"
                 type="number"
@@ -154,7 +154,7 @@ export function UserFormDialog({ open, onClose, onSubmit, initialData, mode }: U
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="quota">Data Quota (bytes)</Label>
+            <Label htmlFor="quota">Лимит трафика (bytes)</Label>
             <Input
               id="quota"
               type="number"
@@ -165,7 +165,7 @@ export function UserFormDialog({ open, onClose, onSubmit, initialData, mode }: U
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="expiration">Expiration (RFC3339)</Label>
+            <Label htmlFor="expiration">Действует до (RFC3339)</Label>
             <Input
               id="expiration"
               value={form.expiration_rfc3339}

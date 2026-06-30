@@ -10,7 +10,7 @@ export interface ClassCount {
 const KNOWN_LABELS: Record<string, string> = {
   timeout: 'Timeout',
   other: 'Other',
-  unknown_tls_sni: 'Unknown TLS SNI',
+  unknown_tls_sni: 'Неизвестный TLS SNI',
   tls_clienthello_len_out_of_bounds: 'TLS ClientHello length out of bounds',
   tls_clienthello_read_error: 'TLS ClientHello read error',
   tls_clienthello_truncated: 'TLS ClientHello truncated',
@@ -80,9 +80,9 @@ export function ConnectionErrors({ badByClass, handshakeFailuresByClass }: Conne
 
   return (
     <div className="bg-surface border border-border rounded-lg p-3 lg:p-4 space-y-4">
-      <h3 className="text-xs lg:text-sm font-medium text-text-secondary">Connection Errors</h3>
-      <ErrorSection title="Bad connections" items={bad} />
-      <ErrorSection title="Handshake failures" items={handshake} />
+      <h3 className="text-xs lg:text-sm font-medium text-text-secondary">Ошибки подключения</h3>
+      <ErrorSection title="Плохих соединений (BAD)" items={bad} />
+      <ErrorSection title="Ошибок хендшейка" items={handshake} />
     </div>
   );
 }

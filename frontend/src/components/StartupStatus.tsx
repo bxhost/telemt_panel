@@ -41,12 +41,12 @@ export function StartupStatus({ status, stage, progressPct }: StartupStatusProps
             {restarting ? (
               <>
                 <Loader2 size={14} className="animate-spin mr-1.5" />
-                Restarting...
+                Перезапускаю...
               </>
             ) : (
               <>
                 <RotateCw size={14} className="mr-1.5" />
-                Restart
+                Перезапустить
               </>
             )}
           </Button>

@@ -19,8 +19,8 @@ export function ConfirmDialog({
   onConfirm,
   title,
   message,
-  confirmLabel = 'Delete',
-  loadingLabel = 'Deleting...',
+  confirmLabel = 'Удалить',
+  loadingLabel = 'Удаление...',
   confirmVariant = 'danger',
   loading,
 }: ConfirmDialogProps) {

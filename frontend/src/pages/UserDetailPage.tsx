@@ -380,8 +380,8 @@ export function UserDetailPage() {
         onConfirm={handleResetQuota}
         title="Reset quota"
         message={`Сбросить счетчик квоты данных для "${username}"? Использованный трафик будет обнулен`}
-        confirmLabel="Reset"
-        loadingLabel="Resetting..."
+        confirmLabel="Сбросить"
+        loadingLabel="Сброс..."
         confirmVariant="default"
         loading={resetting}
       />
