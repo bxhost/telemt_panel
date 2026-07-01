@@ -10,7 +10,7 @@ interface ThemeContextValue {
 }
 
 export const ThemeContext = createContext<ThemeContextValue>({
-  theme: 'dark',
+  theme: 'light',
   toggle: () => {},
 })
 
@@ -19,7 +19,7 @@ function getInitialTheme(): Theme {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'light' || stored === 'dark') return stored
   } catch {}
-  return 'dark'
+  return 'light'
 }
 
 export function useThemeProvider() {
@@ -32,7 +32,7 @@ export function useThemeProvider() {
     localStorage.setItem(STORAGE_KEY, theme)
   }, [theme])
 
-  const toggle = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))
+  const toggle = () => setTheme(t => (t === 'light' ? 'dark' : 'light'))
 
   return { theme, toggle }
 }
